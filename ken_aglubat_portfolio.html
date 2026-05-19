@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kenneth Aglubat — Performance Marketing</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0d0d0d; --surface: #141414; --surface2: #1a1a1a; --border: #222;
+    --accent: #ff2d6b; --accent2: #00e5a0; --text: #f0f0f0; --muted: #666; --mid: #999;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body { background: var(--bg); color: var(--text); font-family: 'DM Sans', sans-serif; font-size: 15px; line-height: 1.6; overflow-x: hidden; }
+
+  nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; display: flex; align-items: center; justify-content: space-between; padding: 18px 48px; background: rgba(13,13,13,0.94); backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); }
+  .nav-logo { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 14px; letter-spacing: 0.08em; color: var(--text); text-decoration: none; }
+  .nav-logo span { color: var(--accent); }
+  nav ul { list-style: none; display: flex; gap: 28px; }
+  nav ul a { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); text-decoration: none; transition: color 0.2s; }
+  nav ul a:hover { color: var(--text); }
+
+  #hero { padding: 180px 48px 80px; max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; }
+  .hero-tag { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent); border: 1px solid var(--accent); display: inline-block; padding: 4px 10px; margin-bottom: 24px; }
+  .hero-name { font-family: 'Syne', sans-serif; font-size: clamp(44px, 5.5vw, 76px); font-weight: 800; line-height: 1; letter-spacing: -0.02em; margin-bottom: 14px; }
+  .hero-name em { font-style: normal; color: var(--accent); }
+  .hero-role { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--mid); letter-spacing: 0.08em; margin-bottom: 28px; line-height: 1.9; }
+  .hero-bio { font-size: 15px; color: var(--mid); line-height: 1.85; max-width: 480px; margin-bottom: 36px; }
+  .hero-bio strong { color: var(--text); font-weight: 500; }
+  .btn-primary { display: inline-block; background: var(--accent); color: #fff; font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase; padding: 13px 26px; text-decoration: none; transition: opacity 0.2s; }
+  .btn-primary:hover { opacity: 0.85; }
+  .btn-sec { display: inline-block; border: 1px solid var(--border); color: var(--mid); font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase; padding: 13px 26px; text-decoration: none; margin-left: 12px; transition: border-color 0.2s, color 0.2s; }
+  .btn-sec:hover { border-color: var(--mid); color: var(--text); }
+  .hero-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--border); border: 1px solid var(--border); }
+  .stat-cell { background: var(--surface); padding: 28px 24px; }
+  .stat-num { font-family: 'Syne', sans-serif; font-size: 38px; font-weight: 800; color: var(--text); line-height: 1; margin-bottom: 6px; }
+  .stat-num span { color: var(--accent); }
+  .stat-label { font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--muted); }
+
+  .metrics-bar { background: var(--surface); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); padding: 48px; }
+  .metrics-inner { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: repeat(5, 1fr); gap: 1px; background: var(--border); border: 1px solid var(--border); }
+  .metric-box { background: var(--surface2); padding: 28px 20px; text-align: center; }
+  .metric-box-num { font-family: 'Syne', sans-serif; font-size: 32px; font-weight: 800; color: var(--text); line-height: 1; }
+  .metric-box-num span { color: var(--accent); }
+  .metric-box-label { font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted); margin-top: 8px; }
+
+  .section-wrap { padding: 100px 48px; max-width: 1200px; margin: 0 auto; }
+  .section-header { display: flex; align-items: baseline; gap: 16px; margin-bottom: 48px; border-bottom: 1px solid var(--border); padding-bottom: 16px; }
+  .section-num { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--accent); letter-spacing: 0.1em; }
+  .section-title { font-family: 'Syne', sans-serif; font-size: 26px; font-weight: 700; letter-spacing: -0.01em; }
+  .section-sub { font-size: 11px; color: var(--muted); margin-left: auto; font-family: 'DM Mono', monospace; letter-spacing: 0.04em; }
+
+  .cases-grid { display: flex; flex-direction: column; gap: 2px; }
+  .case-card { background: var(--surface); border: 1px solid var(--border); overflow: hidden; transition: border-color 0.2s; }
+  .case-card:hover { border-color: #2a2a2a; }
+  .case-header { display: grid; grid-template-columns: 1fr auto auto; align-items: center; padding: 24px 32px; cursor: pointer; gap: 24px; }
+  .case-platform { font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--accent2); margin-bottom: 6px; }
+  .case-title { font-family: 'Syne', sans-serif; font-size: 17px; font-weight: 700; color: var(--text); }
+  .case-industry { font-size: 12px; color: var(--muted); margin-top: 3px; }
+  .case-kpis { display: flex; gap: 20px; flex-shrink: 0; }
+  .kpi { text-align: right; }
+  .kpi-val { font-family: 'Syne', sans-serif; font-size: 20px; font-weight: 800; color: var(--accent); line-height: 1; }
+  .kpi-label { font-family: 'DM Mono', monospace; font-size: 8px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); margin-top: 3px; }
+  .toggle-icon { color: var(--muted); font-size: 18px; transition: transform 0.3s; flex-shrink: 0; width: 24px; text-align: center; }
+  .case-card.active .toggle-icon { transform: rotate(45deg); color: var(--accent); }
+  .case-body { display: none; padding: 0 32px 28px; border-top: 1px solid var(--border); }
+  .case-body.open { display: block; padding-top: 24px; }
+  .case-body-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 28px; margin-bottom: 24px; }
+  .case-screenshot { margin-top: 24px; padding-top: 24px; border-top: 1px solid var(--border); }
+  .case-screenshot img { width: 100%; border: 1px solid var(--border); border-radius: 2px; }
+  .case-section-label { font-family: 'DM Mono', monospace; font-size: 8px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent2); margin-bottom: 10px; }
+  .case-body p, .case-body li { font-size: 12px; color: var(--mid); line-height: 1.75; }
+  .case-body ul { list-style: none; }
+  .case-body li { padding: 2px 0; }
+  .case-body li::before { content: '→ '; color: var(--accent); font-size: 10px; }
+  .result-rows { display: flex; flex-direction: column; }
+  .result-row { display: flex; justify-content: space-between; align-items: center; padding: 7px 0; border-bottom: 1px solid var(--border); }
+  .result-row:last-child { border: none; }
+  .result-metric { color: var(--muted); font-family: 'DM Mono', monospace; font-size: 9px; }
+  .result-value { color: var(--accent); font-family: 'Syne', sans-serif; font-weight: 700; font-size: 14px; }
+
+  .ai-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--border); border: 1px solid var(--border); margin-bottom: 24px; }
+  .ai-card { background: var(--surface); padding: 28px 24px; }
+  .ai-phase { font-family: 'DM Mono', monospace; font-size: 8px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent); margin-bottom: 10px; }
+  .ai-tool { font-family: 'Syne', sans-serif; font-size: 16px; font-weight: 700; margin-bottom: 8px; }
+  .ai-desc { font-size: 12px; color: var(--mid); line-height: 1.75; }
+  .ai-result { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--accent2); margin-top: 12px; }
+  .ai-positioning { background: var(--surface2); border: 1px solid var(--border); border-left: 3px solid var(--accent); padding: 22px 26px; }
+  .ai-positioning p { font-size: 13px; color: var(--mid); line-height: 1.85; }
+  .ai-positioning strong { color: var(--text); }
+
+  .platforms-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: var(--border); border: 1px solid var(--border); }
+  .platform-card { background: var(--surface); padding: 24px 20px; transition: background 0.2s; }
+  .platform-card:hover { background: var(--surface2); }
+  .platform-name { font-family: 'Syne', sans-serif; font-size: 14px; font-weight: 700; margin-bottom: 6px; }
+  .platform-detail { font-family: 'DM Mono', monospace; font-size: 9px; color: var(--muted); line-height: 1.9; }
+  .platform-tag { display: inline-block; font-family: 'DM Mono', monospace; font-size: 8px; letter-spacing: 0.1em; padding: 2px 8px; background: rgba(255,45,107,0.1); color: var(--accent); margin-top: 10px; }
+
+  .exp-list { display: flex; flex-direction: column; gap: 1px; background: var(--border); border: 1px solid var(--border); }
+  .exp-item { background: var(--surface); padding: 26px 30px; display: grid; grid-template-columns: 176px 1fr 156px; gap: 24px; align-items: start; }
+  .exp-period { font-family: 'DM Mono', monospace; font-size: 9px; color: var(--muted); letter-spacing: 0.06em; padding-top: 3px; line-height: 1.7; }
+  .exp-company { font-family: 'Syne', sans-serif; font-size: 12px; font-weight: 700; color: var(--accent2); margin-bottom: 3px; }
+  .exp-role { font-size: 14px; color: var(--text); font-weight: 500; margin-bottom: 10px; }
+  .exp-bullets { list-style: none; }
+  .exp-bullets li { font-size: 12px; color: var(--muted); padding: 2px 0; }
+  .exp-bullets li::before { content: '— '; color: var(--border); }
+  .exp-location { font-family: 'DM Mono', monospace; font-size: 9px; color: var(--muted); text-align: right; padding-top: 3px; }
+
+  .certs-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--border); border: 1px solid var(--border); }
+  .cert-card { background: var(--surface); padding: 22px 20px; }
+  .cert-issuer { font-family: 'DM Mono', monospace; font-size: 8px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--accent); margin-bottom: 8px; }
+  .cert-name { font-family: 'Syne', sans-serif; font-size: 14px; font-weight: 700; color: var(--text); margin-bottom: 4px; }
+  .cert-year { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--muted); }
+
+  .contact-section { background: var(--surface); border-top: 1px solid var(--border); padding: 80px 48px; text-align: center; }
+  .contact-inner { max-width: 600px; margin: 0 auto; }
+  .contact-tag { font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent); margin-bottom: 20px; }
+  .contact-headline { font-family: 'Syne', sans-serif; font-size: 40px; font-weight: 800; letter-spacing: -0.02em; margin-bottom: 16px; line-height: 1.1; }
+  .contact-sub { color: var(--muted); font-size: 14px; margin-bottom: 36px; line-height: 1.7; }
+  .contact-links { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
+  .contact-link { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.1em; padding: 11px 22px; text-decoration: none; border: 1px solid var(--border); color: var(--mid); transition: border-color 0.2s, color 0.2s; }
+  .contact-link:hover { border-color: var(--accent); color: var(--accent); }
+  .contact-link.primary { background: var(--accent); border-color: var(--accent); color: #fff; }
+  .contact-link.primary:hover { opacity: 0.85; color: #fff; }
+
+  footer { padding: 20px 48px; border-top: 1px solid var(--border); display: flex; justify-content: space-between; }
+  footer span { font-family: 'DM Mono', monospace; font-size: 9px; color: var(--muted); letter-spacing: 0.06em; }
+
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+  .hero-left > * { opacity: 0; animation: fadeUp 0.6s ease forwards; }
+  .hero-left > *:nth-child(1) { animation-delay: 0.1s; }
+  .hero-left > *:nth-child(2) { animation-delay: 0.2s; }
+  .hero-left > *:nth-child(3) { animation-delay: 0.3s; }
+  .hero-left > *:nth-child(4) { animation-delay: 0.4s; }
+  .hero-left > *:nth-child(5) { animation-delay: 0.5s; }
+  .hero-stats { opacity: 0; animation: fadeUp 0.6s ease 0.45s forwards; }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="#hero" class="nav-logo">KEN<span>.</span>AGLUBAT</a>
+  <ul>
+    <li><a href="#work">Work</a></li>
+    <li><a href="#ai">AI Workflow</a></li>
+    <li><a href="#experience">Experience</a></li>
+    <li><a href="#about">About</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<div id="hero">
+  <div class="hero-left">
+    <div class="hero-tag">Performance Marketing Lead · AI-Assisted</div>
+    <h1 class="hero-name">Kenneth<br><em>Aglubat</em></h1>
+    <p class="hero-role">Meta · Google · LinkedIn · TikTok · Snapchat<br>Claude · ChatGPT · Make.com · Looker Studio</p>
+    <p class="hero-bio">6+ years running paid media across global markets. I manage strategy, creative direction, and optimization — and <strong>actively use AI tools to produce the output of two marketers</strong>. Results tracked, reported, and improved every campaign.</p>
+    <div>
+      <a href="#work" class="btn-primary">View Case Studies</a>
+      <a href="#about" class="btn-sec">About Me</a>
+    </div>
+  </div>
+  <div class="hero-stats">
+    <div class="stat-cell"><div class="stat-num">₱5M<span>+</span></div><div class="stat-label">Ad Spend Managed</div></div>
+    <div class="stat-cell"><div class="stat-num">6<span>+</span></div><div class="stat-label">Years Experience</div></div>
+    <div class="stat-cell"><div class="stat-num">48<span>x</span></div><div class="stat-label">Peak ROAS</div></div>
+    <div class="stat-cell"><div class="stat-num">540<span>+</span></div><div class="stat-label">Leads in 6 Weeks</div></div>
+  </div>
+</div>
+
+<div class="metrics-bar">
+  <div class="metrics-inner">
+    <div class="metric-box"><div class="metric-box-num">35<span>%</span></div><div class="metric-box-label">CPL Reduction</div></div>
+    <div class="metric-box"><div class="metric-box-num">3.2<span>%</span></div><div class="metric-box-label">LinkedIn CTR</div></div>
+    <div class="metric-box"><div class="metric-box-num">85<span>%</span></div><div class="metric-box-label">Automated Lead Flow</div></div>
+    <div class="metric-box"><div class="metric-box-num">~60<span>%</span></div><div class="metric-box-label">Reporting Time Saved</div></div>
+    <div class="metric-box"><div class="metric-box-num">48<span>h</span></div><div class="metric-box-label">Campaign Launch SLA</div></div>
+  </div>
+</div>
+
+<!-- CASE STUDIES -->
+<div class="section-wrap" id="work">
+  <div class="section-header"><span class="section-num">01</span><h2 class="section-title">Case Studies</h2><span class="section-sub">Click any row to expand</span></div>
+  <div class="cases-grid">
+    <div class="case-card" onclick="toggleCase(this)">
+      <div class="case-header">
+        <div><div class="case-platform">Meta Ads · Messenger + ManyChat</div><div class="case-title">Real Estate Lead Generation via Automated Messenger Funnel</div><div class="case-industry">Premium Property Development · Philippines · Cold Audience</div></div>
+        <div class="case-kpis"><div class="kpi"><div class="kpi-val">540+</div><div class="kpi-label">Leads / 6 Wks</div></div><div class="kpi"><div class="kpi-val">₱40</div><div class="kpi-label">Max CPL</div></div><div class="kpi"><div class="kpi-val">85%</div><div class="kpi-label">Auto-Qualified</div></div></div>
+        <div class="toggle-icon">+</div>
+      </div>
+      <div class="case-body">
+        <div class="case-body-grid">
+          <div><div class="case-section-label">Objective</div><p>Generate qualified property inquiries and automate initial buyer engagement — reducing manual follow-up while maintaining lead quality on cold audiences.</p></div>
+          <div><div class="case-section-label">Strategy</div><ul><li>Directed ad traffic to Messenger instead of a landing page to streamline lead capture</li><li>Integrated ManyChat to automate responses, deliver property details, and qualify leads via conversation flows</li><li>Targeted by location, income bracket, and recent homebuyer intent signals</li></ul></div>
+          <div><div class="case-section-label">Results</div><div class="result-rows"><div class="result-row"><span class="result-metric">Leads Generated</span><span class="result-value">540+</span></div><div class="result-row"><span class="result-metric">Timeframe</span><span class="result-value">6 Weeks</span></div><div class="result-row"><span class="result-metric">CPL (Cold Audience)</span><span class="result-value">≤ ₱40</span></div><div class="result-row"><span class="result-metric">Automated Conv. Rate</span><span class="result-value">85%</span></div></div></div>
+        </div>
+        <div class="case-screenshot">
+          <div class="case-section-label">Campaign Performance</div>
+          <img src="realestate_leads.png" alt="Real Estate Lead Generation Campaign Results">
+        </div>
+      </div>
+    </div>
+
+    <div class="case-card" onclick="toggleCase(this)">
+      <div class="case-header">
+        <div><div class="case-platform">Meta Ads · Lead Generation</div><div class="case-title">Education & Coaching — CPL Reduction Campaign</div><div class="case-industry">Online Education / Coaching · Southeast Asia</div></div>
+        <div class="case-kpis"><div class="kpi"><div class="kpi-val">−35%</div><div class="kpi-label">CPL</div></div><div class="kpi"><div class="kpi-val">500+</div><div class="kpi-label">Leads / Mo 1</div></div><div class="kpi"><div class="kpi-val">+20%</div><div class="kpi-label">Conv. Rate</div></div></div>
+        <div class="toggle-icon">+</div>
+      </div>
+      <div class="case-body">
+        <div><div class="case-section-label">Objective</div><p>Increase qualified lead volume while reducing CPL from previous benchmarks. Monthly budget: $500–$2,000.</p></div>
+        <div><div class="case-section-label">Strategy</div><ul><li>Audience segmentation by interest, behavior, and lookalike profiles</li><li>Compelling ad creatives paired with optimized landing pages</li><li>Continuous A/B testing of copy, creatives, and CTAs across the funnel</li></ul></div>
+        <div><div class="case-section-label">Results</div><div class="result-rows"><div class="result-row"><span class="result-metric">CPL Reduction</span><span class="result-value">−35%</span></div><div class="result-row"><span class="result-metric">Leads — Month 1</span><span class="result-value">500+</span></div><div class="result-row"><span class="result-metric">Conv. Rate Improvement</span><span class="result-value">+20%</span></div></div></div>
+      </div>
+    </div>
+
+    <div class="case-card" onclick="toggleCase(this)">
+      <div class="case-header">
+        <div><div class="case-platform">LinkedIn Ads · Sponsored Content · B2B</div><div class="case-title">Rapid Traffic Campaign — Oil & Gas Industry Client</div><div class="case-industry">Energy Marketing · B2B · Decision-Maker Targeting</div></div>
+        <div class="case-kpis"><div class="kpi"><div class="kpi-val">3.2%</div><div class="kpi-label">CTR</div></div><div class="kpi"><div class="kpi-val">$1.03</div><div class="kpi-label">Cost/Result</div></div><div class="kpi"><div class="kpi-val">48h</div><div class="kpi-label">Launch</div></div></div>
+        <div class="toggle-icon">+</div>
+      </div>
+      <div class="case-body">
+        <div class="case-body-grid">
+          <div><div class="case-section-label">Objective</div><p>Drive high-volume landing page traffic within 48 hours for a time-sensitive industry push targeting decision-makers in oil, gas, and energy sectors.</p></div>
+          <div><div class="case-section-label">Strategy</div><ul><li>LinkedIn Sponsored Content with narrow targeting by job title, industry, and seniority</li><li>Ad variations optimized for clicks with clear CTAs and value-driven messaging</li><li>Interest targeting for USA and global oil & gas professionals</li></ul></div>
+          <div><div class="case-section-label">Results</div><div class="result-rows"><div class="result-row"><span class="result-metric">Average CTR</span><span class="result-value">3.2%</span></div><div class="result-row"><span class="result-metric">Total Impressions</span><span class="result-value">6,097</span></div><div class="result-row"><span class="result-metric">Cost Per Result</span><span class="result-value">$1.03–$1.71</span></div><div class="result-row"><span class="result-metric">Campaign Live In</span><span class="result-value">48 Hours</span></div></div></div>
+        </div>
+        <div class="case-screenshot">
+          <div class="case-section-label">Campaign Performance</div>
+          <img src="linkedin_energy_ctr.png" alt="LinkedIn B2B Energy Campaign Performance">
+        </div>
+      </div>
+    </div>
+
+    <div class="case-card" onclick="toggleCase(this)">
+      <div class="case-header">
+        <div><div class="case-platform">Meta Ads · eCommerce · Full Funnel</div><div class="case-title">High-ROAS eCommerce Scaling — Health & Consumer Goods</div><div class="case-industry">Health & Wellness / Consumer Goods · eCommerce</div></div>
+        <div class="case-kpis"><div class="kpi"><div class="kpi-val">48x</div><div class="kpi-label">TOF ROAS</div></div><div class="kpi"><div class="kpi-val">31x</div><div class="kpi-label">MBOF ROAS</div></div><div class="kpi"><div class="kpi-val">$10.80</div><div class="kpi-label">Avg CPP</div></div></div>
+        <div class="toggle-icon">+</div>
+      </div>
+      <div class="case-body">
+        <div class="case-body-grid">
+          <div><div class="case-section-label">Objective</div><p>Scale profitable eCommerce purchases using a structured full-funnel Meta Ads approach. Monthly budget: ~$500–$1,500.</p></div>
+          <div><div class="case-section-label">Strategy</div><ul><li>Separate TOF (cold prospecting) and MBOF (warm retargeting) campaigns with distinct creative strategies</li><li>Continuous creative testing to isolate winning ad sets before scaling</li><li>Bid strategy and budget allocation optimized per funnel stage</li></ul></div>
+          <div><div class="case-section-label">Results</div><div class="result-rows"><div class="result-row"><span class="result-metric">TOF Campaign ROAS</span><span class="result-value">48x</span></div><div class="result-row"><span class="result-metric">MBOF Campaign ROAS</span><span class="result-value">31x</span></div><div class="result-row"><span class="result-metric">Total Purchases</span><span class="result-value">145+</span></div><div class="result-row"><span class="result-metric">Avg. Cost Per Purchase</span><span class="result-value">~$10.80</span></div></div></div>
+        </div>
+        <div class="case-screenshot">
+          <div class="case-section-label">Campaign Performance</div>
+          <img src="ecommerce_48x_roas.png" alt="eCommerce Campaign 48x ROAS Results">
+        </div>
+      </div>
+    </div>
+
+    <div class="case-card" onclick="toggleCase(this)">
+      <div class="case-header">
+        <div><div class="case-platform">Email Marketing · Multi-Client</div><div class="case-title">Seasonal Newsletter Campaigns — HVAC & Energy Sector</div><div class="case-industry">HVAC · Fuel & Energy Services · B2C</div></div>
+        <div class="case-kpis"><div class="kpi"><div class="kpi-val">37.95%</div><div class="kpi-label">Peak Open Rate</div></div><div class="kpi"><div class="kpi-val">3.2%</div><div class="kpi-label">Peak Click Rate</div></div></div>
+        <div class="toggle-icon">+</div>
+      </div>
+      <div class="case-body">
+        <div class="case-body-grid">
+          <div><div class="case-section-label">Objective</div><p>Drive seasonal engagement and nurture leads for multiple HVAC and energy clients through strategically timed campaigns aligned to demand peaks — pre-summer AC maintenance, winter heating systems, and fuel price volatility periods.</p></div>
+          <div><div class="case-section-label">Strategy</div><ul><li>Seasonal timing aligned to service demand peaks (pre-summer, pre-winter, price alerts)</li><li>Subject line optimization and mobile-first email layouts</li><li>Brand-voice-aligned copywriting with urgency-driven CTAs</li><li>Segmented campaigns across 4 HVAC and fuel energy brands simultaneously</li></ul></div>
+          <div><div class="case-section-label">Top Campaigns</div><div class="result-rows"><div class="result-row"><span class="result-metric">"Repair or Replace" (Feb24)</span><span class="result-value">37.95% open · 3.2% click</span></div><div class="result-row"><span class="result-metric">"Heating System Install" (Jan24)</span><span class="result-value">36.36% open · 3.12% click</span></div><div class="result-row"><span class="result-metric">"Mid-Season Checkin" (Mar24)</span><span class="result-value">35.62% open · 8,989 sends</span></div><div class="result-row"><span class="result-metric">Email Volume</span><span class="result-value">2,866–9,076 per campaign</span></div></div></div>
+        </div>
+        <div class="case-screenshot">
+          <div class="case-section-label">Campaign Performance</div>
+          <img src="email_campaigns.png" alt="Email Marketing Campaign Performance Data">
+        </div>
+      </div>
+    </div>
+
+    <div class="case-card" onclick="toggleCase(this)">
+      <div class="case-header">
+        <div><div class="case-platform">Google Analytics 4 · Looker Studio · Multi-Channel</div><div class="case-title">GA4 Analytics Reporting — Energy Sector Clients</div><div class="case-industry">HVAC · Fuel & Energy Services · US Market</div></div>
+        <div class="case-kpis"><div class="kpi"><div class="kpi-val">+91%</div><div class="kpi-label">YoY Sessions</div></div><div class="kpi"><div class="kpi-val">+159%</div><div class="kpi-label">YoY Traffic</div></div><div class="kpi"><div class="kpi-val">5</div><div class="kpi-label">Channels</div></div></div>
+        <div class="toggle-icon">+</div>
+      </div>
+      <div class="case-body">
+        <div class="case-body-grid">
+          <div><div class="case-section-label">Objective</div><p>Produce monthly multi-channel digital marketing reports for US-based energy clients, tracking website analytics, paid ads, email performance, and Google Business Profile metrics with year-over-year comparisons.</p></div>
+          <div><div class="case-section-label">Deliverables</div><ul><li>GA4 website traffic analysis and session attribution</li><li>Google Business Profile performance tracking (impressions, calls, clicks)</li><li>Google Ads PPC conversion and spend tracking</li><li>ActiveCampaign email metrics integration</li><li>Facebook/social media reach and engagement metrics</li><li>YoY performance comparisons for stakeholder review</li></ul></div>
+          <div><div class="case-section-label">Results</div><div class="result-rows"><div class="result-row"><span class="result-metric">Client A (Energy/Fuel)</span><span class="result-value">7,217 sessions (+91% YoY)</span></div><div class="result-row"><span class="result-metric">Client B (HVAC/Energy)</span><span class="result-value">7,308 sessions (+159% YoY)</span></div><div class="result-row"><span class="result-metric">Reporting Frequency</span><span class="result-value">Monthly</span></div><div class="result-row"><span class="result-metric">Channels Tracked</span><span class="result-value">GA4, GBP, Ads, Email, FB</span></div></div></div>
+        </div>
+        <div class="screenshot-section">
+          <div class="case-section-label">Sample Dashboard</div>
+          <p style="font-size: 13px; color: var(--muted); margin-bottom: 14px; line-height: 1.6;">Sample GA4 Digital Marketing Report — March 2026. Report tracked: website sessions, traffic sources, Google Business Profile insights, Google Ads performance, email campaign metrics, and social media reach — all with year-over-year performance comparisons for stakeholder decision-making.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- AI WORKFLOW -->
+<div class="section-wrap" id="ai" style="padding-top: 0;">
+  <div class="section-header"><span class="section-num">02</span><h2 class="section-title">AI Workflow</h2><span class="section-sub">Actively integrated, not aspirational</span></div>
+  <div class="ai-grid">
+    <div class="ai-card"><div class="ai-phase">Copy & Messaging</div><div class="ai-tool">Claude + ChatGPT</div><div class="ai-desc">Generate 5–10 ad copy variations per brief. I review, edit, and test — never publish raw output. Cuts drafting from hours to minutes with more variants tested per campaign.</div><div class="ai-result">→ Faster creative iteration across every campaign</div></div>
+    <div class="ai-card"><div class="ai-phase">Reporting & Analysis</div><div class="ai-tool">Claude + Looker Studio</div><div class="ai-desc">Feed raw campaign numbers into Claude to generate structured performance summaries. Build Looker Studio dashboards clients can understand in 60 seconds.</div><div class="ai-result">→ ~60% reduction in reporting time per client</div></div>
+    <div class="ai-card"><div class="ai-phase">Research & Intelligence</div><div class="ai-tool">Perplexity + Gemini + LM Studio</div><div class="ai-desc">Perplexity for fast competitive and audience research. Gemini for cross-checking data and new angles. LM Studio for local, private model workflows.</div><div class="ai-result">→ 2-hour research tasks done in under 20 minutes</div></div>
+    <div class="ai-card"><div class="ai-phase">Automation</div><div class="ai-tool">Make.com + Zapier</div><div class="ai-desc">Automate the connective tissue: report delivery, lead routing from ad platforms to CRM, performance threshold alerts via Slack.</div><div class="ai-result">→ Eliminates manual handoffs; campaigns run leaner</div></div>
+    <div class="ai-card"><div class="ai-phase">Lead Qualification</div><div class="ai-tool">ManyChat + AI Flows</div><div class="ai-desc">Automated conversation flows that qualify leads before they reach a human. Deployed with Meta Ads Messenger campaigns for real estate and education clients.</div><div class="ai-result">→ 85% of leads qualified automatically in one deployment</div></div>
+    <div class="ai-card"><div class="ai-phase">The Bottom Line</div><div class="ai-tool">2× Output. Same Budget.</div><div class="ai-desc">AI removes the bottlenecks around campaign judgment — more copy variants, faster reporting, cleaner lead flows. The results show up in the numbers, not just the toolstack.</div><div class="ai-result">→ The work of two marketers, delivered by one operator</div></div>
+  </div>
+  <div class="ai-positioning"><p><strong>Honest positioning:</strong> I'm actively integrating AI tools into paid media workflows — not claiming to be an "AI expert." These tools are in my daily stack. I use them where they make campaigns better and reporting faster. Human judgment still drives every strategic call.</p></div>
+</div>
+
+<!-- PLATFORMS -->
+<div class="section-wrap" id="platforms" style="padding-top: 0;">
+  <div class="section-header"><span class="section-num">03</span><h2 class="section-title">Platforms & Tools</h2></div>
+  <div class="platforms-grid">
+    <div class="platform-card"><div class="platform-name">Meta Ads</div><div class="platform-detail">Facebook & Instagram · Lead Gen · Messenger Funnels · eCommerce · A/B Testing · ManyChat</div><div class="platform-tag">Facebook Certified</div></div>
+    <div class="platform-card"><div class="platform-name">Google Ads</div><div class="platform-detail">Search · Performance Max · Remarketing · Keyword Strategy · Conversion Tracking</div><div class="platform-tag">Google Certified</div></div>
+    <div class="platform-card"><div class="platform-name">LinkedIn Ads</div><div class="platform-detail">Sponsored Content · B2B Targeting · Job Title & Industry Segments · Traffic Campaigns</div><div class="platform-tag">B2B Specialist</div></div>
+    <div class="platform-card"><div class="platform-name">TikTok & Snapchat</div><div class="platform-detail">Short-form Video · TOF Awareness · Youth & Lifestyle Audiences · Creative Direction</div><div class="platform-tag">Paid Social</div></div>
+    <div class="platform-card"><div class="platform-name">AI Tools</div><div class="platform-detail">Claude · ChatGPT · Perplexity · Google Gemini · LM Studio — daily workflow integration</div><div class="platform-tag">AI-Assisted</div></div>
+    <div class="platform-card"><div class="platform-name">Analytics</div><div class="platform-detail">GA4 · Looker Studio · Meta Business Suite · Custom Dashboards · Weekly KPI Reporting</div><div class="platform-tag">Data-Driven</div></div>
+    <div class="platform-card"><div class="platform-name">Automation</div><div class="platform-detail">Make.com · Zapier · ManyChat · ActiveCampaign · HubSpot · ClickFunnels · Kajabi</div><div class="platform-tag">Full Funnel</div></div>
+    <div class="platform-card"><div class="platform-name">Project Mgmt</div><div class="platform-detail">Notion · ClickUp · Asana · Monday.com · Trello · Slack · Google Workspace</div><div class="platform-tag">Remote-First</div></div>
+  </div>
+</div>
+
+<!-- EXPERIENCE -->
+<div class="section-wrap" id="experience" style="padding-top: 0;">
+  <div class="section-header"><span class="section-num">04</span><h2 class="section-title">Experience</h2></div>
+  <div class="exp-list">
+    <div class="exp-item">
+      <div class="exp-period">Oct 2022 — Present</div>
+      <div><div class="exp-company">Madeira Group (now Navara Marketing)</div><div class="exp-role">Marketing Consultant / Ads & Content Manager</div><ul class="exp-bullets"><li>LinkedIn Ads & email campaigns for energy industry clients — US market</li><li>35% email engagement improvement via AI-assisted copy and segmentation</li><li>Performance reports using Claude/ChatGPT — ~60% faster turnaround</li></ul></div>
+      <div class="exp-location">Remote · US-Based</div>
+    </div>
+    <div class="exp-item">
+      <div class="exp-period">Jun 2023 — Jan 2026</div>
+      <div><div class="exp-company">Ooze Media</div><div class="exp-role">Freelance Media Buyer (Part-Time / On-Call)</div><ul class="exp-bullets"><li>Meta & Google Ads for Australian e-commerce and lead gen clients</li><li>Ad copy and design direction with weekly ROI-focused optimization reports</li></ul></div>
+      <div class="exp-location">Remote · AU-Based</div>
+    </div>
+    <div class="exp-item">
+      <div class="exp-period">Nov 2020 — Dec 2021</div>
+      <div><div class="exp-company">Optimize4Success</div><div class="exp-role">Media Buyer / Project Manager</div><ul class="exp-bullets"><li>48x ROAS (TOF) and 31x ROAS (MBOF) for e-commerce clients</li><li>Automated reporting via Make.com; Looker Studio dashboards for client-facing analytics</li></ul></div>
+      <div class="exp-location">Remote · Burbank, CA</div>
+    </div>
+    <div class="exp-item">
+      <div class="exp-period">Dec 2017 — Oct 2020</div>
+      <div><div class="exp-company">Adam Khoo Learning Technologies Group</div><div class="exp-role">General Manager → Marketing Executive</div><ul class="exp-bullets"><li>Scaled Facebook Ads for educational programs — 500+ leads in first campaign month</li><li>GM role: oversaw sales, marketing, and finance operations</li></ul></div>
+      <div class="exp-location">Baguio City, PH</div>
+    </div>
+  </div>
+</div>
+
+<!-- ABOUT ME -->
+<div class="section-wrap" id="about" style="padding-top: 0;">
+  <div class="section-header"><span class="section-num">05</span><h2 class="section-title">About Me</h2></div>
+  <div style="max-width: 900px;">
+    <p style="font-size: 17px; line-height: 1.8; color: var(--mid); margin-bottom: 24px;">
+      I'm a performance marketer who's spent 6+ years managing paid media campaigns across Meta, Google, LinkedIn, TikTok, and Snapchat — delivering measurable results for clients in real estate, eCommerce, education, B2B energy, and home services.
+    </p>
+    
+    <p style="font-size: 17px; line-height: 1.8; color: var(--mid); margin-bottom: 24px;">
+      I specialize in <strong style="color: var(--text);">full-funnel campaign strategy</strong> — from cold audience prospecting to retargeting and conversion optimization. My approach combines platform expertise with AI-assisted workflows (Claude, ChatGPT, Make.com, Looker Studio) to operate more efficiently and deliver cleaner insights to clients.
+    </p>
+    
+    <p style="font-size: 17px; line-height: 1.8; color: var(--mid); margin-bottom: 24px;">
+      I've managed <strong style="color: var(--text);">₱5M+ in total ad spend</strong>, working remotely with clients in the Philippines, Australia, and the United States. I've worked with everyone from local entrepreneurs to growing startups and established brands — always with the same focus: clear KPIs, weekly reporting, and continuous optimization.
+    </p>
+    
+    <p style="font-size: 17px; line-height: 1.8; color: var(--mid); margin-bottom: 32px;">
+      Beyond performance marketing, I'm a <strong style="color: var(--text);">Certified Paralegal</strong> and current <strong style="color: var(--text);">Juris Doctor student</strong>. This legal background gives me a unique edge when working with compliance-sensitive industries — I understand both the performance metrics and the regulatory constraints.
+    </p>
+    
+    <div style="border-left: 3px solid var(--accent); padding-left: 24px; margin-bottom: 32px;">
+      <p style="font-family: 'DM Mono', monospace; font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent); margin-bottom: 12px;">Core Approach</p>
+      <p style="font-size: 16px; line-height: 1.8; color: var(--mid);">
+        Every campaign I run is built around measurable outcomes. I'm not interested in vanity metrics or "awareness" plays — I optimize for conversions, leads, and revenue. I use AI tools to move faster, but the strategy, judgment, and optimization are manual. The results speak for themselves.
+      </p>
+    </div>
+    
+    <p style="font-size: 17px; line-height: 1.8; color: var(--mid);">
+      Currently open to remote performance marketing roles — particularly those in legal, fintech, healthcare, or other regulated industries where my background adds strategic value.
+    </p>
+  </div>
+</div>
+
+<!-- CERTS -->
+<div class="section-wrap" id="certifications" style="padding-top: 0;">
+  <div class="section-header"><span class="section-num">06</span><h2 class="section-title">Certifications</h2></div>
+  <div class="certs-grid">
+    <div class="cert-card"><div class="cert-issuer">Meta / Facebook</div><div class="cert-name">Certified Media Buying Professional</div><div class="cert-year">2021</div></div>
+    <div class="cert-card"><div class="cert-issuer">Google</div><div class="cert-name">Google Ads Search Certification</div><div class="cert-year">November 2021</div></div>
+    <div class="cert-card"><div class="cert-issuer">Legal / Professional</div><div class="cert-name">Certified Paralegal</div><div class="cert-year">2024</div></div>
+    <div class="cert-card"><div class="cert-issuer">Personal Development</div><div class="cert-name">Neuro-Linguistic Programming (NLP)</div><div class="cert-year">2019</div></div>
+    <div class="cert-card"><div class="cert-issuer">Education (In Progress)</div><div class="cert-name">Juris Doctor</div><div class="cert-year">Northeastern College · 2023–Present</div></div>
+    <div class="cert-card"><div class="cert-issuer">Education</div><div class="cert-name">BS-BA, Management Information Systems</div><div class="cert-year">AMA Computer College · 2014</div></div>
+  </div>
+</div>
+
+<div class="contact-section" id="contact">
+  <div class="contact-inner">
+    <div class="contact-tag">Available for New Opportunities</div>
+    <h2 class="contact-headline">Let's Build Something That Performs.</h2>
+    <p class="contact-sub">Open to remote roles in Performance Marketing, Media Buying, and Digital Marketing — including legal and compliance-sensitive industries. Globally experienced, async-ready.</p>
+    <div class="contact-links">
+      <a href="mailto:kenaglubat@gmail.com" class="contact-link primary">kenaglubat@gmail.com</a>
+      <a href="https://www.linkedin.com/in/kenaglubatgo/" target="_blank" class="contact-link">LinkedIn</a>
+      <a href="tel:+639179432703" class="contact-link">+63 917 943 2703</a>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <span>© 2025 Kenneth Aglubat</span>
+  <span>Performance Marketing · Meta · Google · LinkedIn · AI-Assisted</span>
+</footer>
+
+<script>
+function toggleCase(card) {
+  const body = card.querySelector('.case-body');
+  const isOpen = card.classList.contains('active');
+  document.querySelectorAll('.case-card').forEach(c => { c.classList.remove('active'); c.querySelector('.case-body').classList.remove('open'); });
+  if (!isOpen) { card.classList.add('active'); body.classList.add('open'); }
+}
+</script>
+</body>
+</html>
